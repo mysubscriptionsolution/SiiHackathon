@@ -1,5 +1,4 @@
-﻿using NUnit.Framework.Legacy;
-using SiiHackathon.Pages;
+﻿using SiiHackathon.Pages;
 
 namespace SiiHackathon.Tests
 {
@@ -48,8 +47,12 @@ namespace SiiHackathon.Tests
             var email = Helpers.GenerateTestData.GenerateRandomEmail();
             var firstName = Helpers.GenerateTestData.GenerateRandomName();
             var lastName = Helpers.GenerateTestData.GenerateRandomName();
-            var registrationPage = new Pages.RegistrationPage(_page);
-            //await registrationPage.FillInRegisterForm("Test", "Test", ");
+            var password = Helpers.GenerateTestData.GenerateRandomPassword();
+            var homePage = new HomePage(_page);
+            var registrationPage = await homePage.GoToRegistrationPage();
+            await registrationPage.FillInRegisterForm(firstName, lastName, email, password);
+            var loggedInPage = await registrationPage.ClickSave();
+            Assert.That(await loggedInPage.IsUserLoggedIn(), Is.True, "User should be logged in after registration");
         }
     }
 }

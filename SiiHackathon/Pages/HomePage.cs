@@ -19,6 +19,13 @@ namespace SiiHackathon.Pages
             return new LoginPage(_page);
         }
 
+        public async Task<RegistrationPage> GoToRegistrationPage()
+        {
+            await _page.GotoAsync(Const.Urls.Registration);
+            return new RegistrationPage(_page);
+        }
+       
+
         public async Task<int> GetProductsCountInCart()
         {
             var countText = await CartProductsCountLabel.InnerTextAsync();

@@ -6,9 +6,10 @@ namespace SiiHackathon.Pages
     {
         ILocator addToCartButton => _page.Locator(".add-to-cart");
 
-        public async Task ClickAddToCardButton()
+        public async Task<ProductAddedToCartModal> ClickAddToCardButton()
         {
             await addToCartButton.ClickAsync();
+            return new ProductAddedToCartModal(_page);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SiiHackathon.Pages;
+﻿using NUnit.Framework.Legacy;
+using SiiHackathon.Pages;
 
 namespace SiiHackathon.Tests
 {
@@ -22,7 +23,23 @@ namespace SiiHackathon.Tests
             var productsPage = new ProductsPage(_page);
             await productsPage.ClickProductByName("Hummingbird printed t-shirt");
             var productDetailsPage = new ProductDetailsPage(_page);
-            await productDetailsPage.ClickAddToCardButton();
+            var productAddedToCartModal = await productDetailsPage.ClickAddToCardButton();
+
+            Assert.That(await productAddedToCartModal.GetConfirmationText(), Does.Contain("Product successfully added to your shopping cart"));
+        }
+
+        [Test]
+        public async Task RemoveProductFromCart()
+        {
+            var homePage = new HomePage(_page);
+            await homePage.OpenAsync();
+            var productsPage = new ProductsPage(_page);
+            await productsPage.ClickProductByName("Hummingbird printed t-shirt");
+            var productDetailsPage = new ProductDetailsPage(_page);
+            var productAddedToCartModal = await productDetailsPage.ClickAddToCardButton();
+            var cartPage  = await productAddedToCartModal.ProceedToCheckout();
+            await cartPage.RemoveProductFromBasket("Hummingbird printed t-shirt");
+            Assert.That(await homePage.GetProductsCountInCart(), Is.Zero);
         }
 
         [Test]

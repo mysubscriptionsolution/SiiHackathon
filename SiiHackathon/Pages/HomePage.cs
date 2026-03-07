@@ -6,7 +6,7 @@ namespace SiiHackathon.Pages
     {
         private ILocator LoginButton => _page.GetByRole(AriaRole.Link, new() { Name = " Sign in" });
         ILocator CartButton => _page.Locator(".cart-preview");
-        ILocator CartProductsCountLabel => _page.Locator(".cart-products-count");
+        ILocator CartProductsCountLabel => _page.Locator("#header .cart-products-count");
 
         public async Task OpenAsync()
         {

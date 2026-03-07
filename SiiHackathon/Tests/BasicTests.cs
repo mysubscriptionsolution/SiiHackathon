@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace SiiHackathon.Tests
 {
-    internal class BasicTests
+    internal class BasicTests : BaseTest
     {
         [Test]
         public void CreateAccount()
         {
             //Arrange
             //Act
-
+            
             //Assert
         }
     }

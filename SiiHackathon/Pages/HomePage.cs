@@ -4,9 +4,9 @@ namespace SiiHackathon.Pages
 {
     internal class HomePage
     {
-        private IPage page;
+        private readonly IPage page;
 
-        ILocator LoginButton =>page.GetByRole(AriaRole.Link, new() { Name = " Sign in" });
+        ILocator LoginButton => page.GetByRole(AriaRole.Link, new() { Name = " Sign in" });
 
         public HomePage(IPage page)
         {

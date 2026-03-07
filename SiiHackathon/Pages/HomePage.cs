@@ -11,9 +11,10 @@ namespace SiiHackathon.Pages
             await _page.GotoAsync("/");
         }
 
-        public async Task ClickLoginButton()
+        public async Task<LoginPage> ClickLoginButton()
         {
             await LoginButton.ClickAsync();
+            return new LoginPage(_page);
         }
 
         public async Task<RegistrationPage> GoToRegistrationPage()

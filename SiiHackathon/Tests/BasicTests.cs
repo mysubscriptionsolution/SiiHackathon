@@ -72,6 +72,7 @@ namespace SiiHackathon.Tests
             };
 
             await checkoutPage.AddressSection.FillInAddressForm(address);
+            await checkoutPage.ShippingMethodSection.ChooseShippingMethod("My carrier");
         }
 
         [Test]

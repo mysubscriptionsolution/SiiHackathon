@@ -2,20 +2,18 @@
 
 namespace SiiHackathon.Pages
 {
-    internal class HomePage
+    internal class HomePage(IPage page) : BasePage(page)
     {
-        private readonly IPage page;
+        private ILocator LoginButton => _page.GetByRole(AriaRole.Link, new() { Name = " Sign in" });
 
-        ILocator LoginButton => page.GetByRole(AriaRole.Link, new() { Name = " Sign in" });
-
-        public HomePage(IPage page)
+        public async Task OpenAsync()
         {
-            this.page = page;
+            await _page.GotoAsync("/");
         }
 
-        public void ClickLoginButton()
+        public async Task ClickLoginButton()
         {
-            LoginButton.ClickAsync();
+            await LoginButton.ClickAsync();
         }
     }
 }

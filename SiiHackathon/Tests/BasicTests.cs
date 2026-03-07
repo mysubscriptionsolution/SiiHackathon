@@ -1,8 +1,13 @@
-﻿using Microsoft.Playwright;
-using SiiHackathon.Pages;
+﻿using SiiHackathon.Pages;
+using System.Text.Json;
 
 namespace SiiHackathon.Tests
 {
+    public class Credentials 
+    {
+        public string Login { get; set; }
+        public string Password { get; set; }
+    }
     internal class BasicTests : BaseTest
     {
         [Test]
@@ -12,7 +17,15 @@ namespace SiiHackathon.Tests
             await homePage.OpenAsync();
 
             var loginPage = await homePage.ClickLoginButton();
-            await loginPage.Login("mszymczyk@sii.pl", "6G49v3Vn_zu4R#P");
+            Credentials credentials;
+
+            using (var r = new StreamReader("TestData\\testData.json"))
+            {
+                string json = r.ReadToEnd();
+                credentials = JsonSerializer.Deserialize<Credentials>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            }
+
+            await loginPage.Login(credentials.Login, credentials.Password);
         }
 
         [Test]
@@ -23,7 +36,23 @@ namespace SiiHackathon.Tests
             var productsPage = new ProductsPage(_page);
             await productsPage.ClickProductByName("Hummingbird printed t-shirt");
             var productDetailsPage = new ProductDetailsPage(_page);
-            await productDetailsPage.ClickAddToCardButton();
+            var productAddedToCartModal = await productDetailsPage.ClickAddToCardButton();
+
+            Assert.That(await productAddedToCartModal.GetConfirmationText(), Does.Contain("Product successfully added to your shopping cart"));
+        }
+
+        [Test]
+        public async Task RemoveProductFromCart()
+        {
+            var homePage = new HomePage(_page);
+            await homePage.OpenAsync();
+            var productsPage = new ProductsPage(_page);
+            await productsPage.ClickProductByName("Hummingbird printed t-shirt");
+            var productDetailsPage = new ProductDetailsPage(_page);
+            var productAddedToCartModal = await productDetailsPage.ClickAddToCardButton();
+            var cartPage  = await productAddedToCartModal.ProceedToCheckout();
+            await cartPage.RemoveProductFromBasket("Hummingbird printed t-shirt");
+            Assert.That(await homePage.GetProductsCountInCart(), Is.Zero);
         }
 
         [Test]

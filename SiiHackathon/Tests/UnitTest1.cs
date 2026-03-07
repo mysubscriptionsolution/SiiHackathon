@@ -1,4 +1,4 @@
-﻿namespace SiiHackathon
+﻿namespace SiiHackathon.Tests
 {
     [Parallelizable(ParallelScope.Self)]
     [TestFixture]

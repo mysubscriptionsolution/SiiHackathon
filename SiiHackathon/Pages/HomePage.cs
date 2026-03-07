@@ -15,5 +15,12 @@ namespace SiiHackathon.Pages
         {
             await LoginButton.ClickAsync();
         }
+
+        public async Task<RegistrationPage> GoToRegistrationPage()
+        {
+            await _page.GotoAsync(Const.Urls.Registration);
+            return new RegistrationPage(_page);
+        }
+       
     }
 }

@@ -1,13 +1,8 @@
-﻿using SiiHackathon.Pages;
-using System.Text.Json;
+﻿using SiiHackathon.Models.DataModels;
+using SiiHackathon.Pages;
 
 namespace SiiHackathon.Tests
 {
-    public class Credentials 
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-    }
     internal class BasicTests : BaseTest
     {
         [Test]
@@ -17,15 +12,9 @@ namespace SiiHackathon.Tests
             await homePage.OpenAsync();
 
             var loginPage = await homePage.ClickLoginButton();
-            Credentials credentials;
+            var credentials = Credentials.LoadCredentialsDataFromFile();
 
-            using (var r = new StreamReader("TestData\\testData.json"))
-            {
-                string json = r.ReadToEnd();
-                credentials = JsonSerializer.Deserialize<Credentials>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
-            }
-
-            await loginPage.Login(credentials.Login, credentials.Password);
+            await loginPage.Login(credentials.Login!, credentials.Password!);
         }
 
         [Test]
@@ -37,8 +26,8 @@ namespace SiiHackathon.Tests
             await productsPage.ClickProductByName("Hummingbird printed t-shirt");
             var productDetailsPage = new ProductDetailsPage(_page);
             var productAddedToCartModal = await productDetailsPage.ClickAddToCardButton();
-
             Assert.That(await productAddedToCartModal.GetConfirmationText(), Does.Contain("Product successfully added to your shopping cart"));
+            Assert.That(await homePage.GetProductsCountInCart(), Is.EqualTo(1));
         }
 
         [Test]
@@ -53,6 +42,36 @@ namespace SiiHackathon.Tests
             var cartPage  = await productAddedToCartModal.ProceedToCheckout();
             await cartPage.RemoveProductFromBasket("Hummingbird printed t-shirt");
             Assert.That(await homePage.GetProductsCountInCart(), Is.Zero);
+        }
+
+        [Test]
+        public async Task ProcessOrderCheckout()
+        {
+            var homePage = new HomePage(_page);
+            await homePage.OpenAsync();
+
+            var loginPage = await homePage.ClickLoginButton();
+            var credentials = Credentials.LoadCredentialsDataFromFile();
+            await loginPage.Login(credentials.Login!, credentials.Password!);
+
+            var productsPage = new ProductsPage(_page);
+            await productsPage.ClickProductByName("Hummingbird printed t-shirt");
+            var productDetailsPage = new ProductDetailsPage(_page);
+            var productAddedToCartModal = await productDetailsPage.ClickAddToCardButton();
+            var cartPage = await productAddedToCartModal.ProceedToCheckout();
+                var checkoutPage = await cartPage.ProceedToCheckout();
+
+            var address = new OrderAddress
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                Address = "123 Main St",
+                City = "Anytown",
+                PostalCode = "12345",
+                Country = "United Kingdom"
+            };
+
+            await checkoutPage.AddressSection.FillInAddressForm(address);
         }
 
         [Test]

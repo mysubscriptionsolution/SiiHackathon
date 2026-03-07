@@ -9,11 +9,11 @@ namespace SiiHackathon.Pages
 {
     internal class RegistrationPage 
     {
-        private ILocator FirstNameInput => page.GetById("field-firstname");
-        private ILocator LastNameInput => page.GetById("field-lastname");
-        private ILocator EmailInput => page.GetById("field-email");
-        private ILocator PasswordInput => page.GetById("field-password");
-        private ILocator AgreeTermsCheckboxt => page.Locator("#field-email");
+        //private ILocator FirstNameInput => page.GetById("field-firstname");
+        //private ILocator LastNameInput => page.GetById("field-lastname");
+        //private ILocator EmailInput => page.GetById("field-email");
+        //private ILocator PasswordInput => page.GetById("field-password");
+        //private ILocator AgreeTermsCheckboxt => page.Locator("#field-email");
 
     }
 }

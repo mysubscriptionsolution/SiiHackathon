@@ -59,10 +59,11 @@ namespace SiiHackathon.Tests
             var productDetailsPage = new ProductDetailsPage(_page);
             var productAddedToCartModal = await productDetailsPage.ClickAddToCardButton();
             var cartPage = await productAddedToCartModal.ProceedToCheckout();
-                var checkoutPage = await cartPage.ProceedToCheckout();
+            var checkoutPage = await cartPage.ProceedToCheckout();
 
             var address = new OrderAddress
             {
+                AddressAlias = "Order Address",
                 FirstName = "John",
                 LastName = "Doe",
                 Address = "123 Main St",
@@ -71,6 +72,7 @@ namespace SiiHackathon.Tests
                 Country = "United Kingdom"
             };
 
+            await checkoutPage.AddressSection.DeleteExistingAddress("Order Address");
             await checkoutPage.AddressSection.FillInAddressForm(address);
             await checkoutPage.ShippingMethodSection.ChooseShippingMethod("My carrier");
         }

@@ -2,15 +2,19 @@
 
 namespace SiiHackathon.Pages.Sections.OrderCheckoutSections
 {
-    internal class ShippingMethodSection(IPage page) : BasePage(page)
+    internal class ShippingMethodSection(IPage page) : OrderSectionBase(page)
     {
-        ILocator shippingMethodSection => _page.Locator("#checkout-delivery-step");
+        protected override ILocator SectionLocator => _page.Locator("#checkout-delivery-step");
 
-        public async Task ChooseShippingMethod(string shippingMethodName)
+        public async Task ChooseShippingMethod(string shippingMethodName, bool continueToNextStep = true)
         {
-            var shippingMethodOption = shippingMethodSection.GetByRole(AriaRole.Radio, new() { Name = shippingMethodName });
+            var shippingMethodOption = SectionLocator.GetByRole(AriaRole.Radio, new() { Name = shippingMethodName });
             await shippingMethodOption.CheckAsync();
-            await shippingMethodSection.GetByRole(AriaRole.Button, new() { Name = "Continue" }).ClickAsync();
+
+            if (continueToNextStep)
+            {
+                await ContinueToNextStep();
+            }
         }
     }
 }

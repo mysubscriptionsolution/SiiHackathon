@@ -24,7 +24,6 @@ namespace SiiHackathon.Pages
             await _page.GotoAsync(Const.Urls.Registration);
             return new RegistrationPage(_page);
         }
-       
 
         public async Task<int> GetProductsCountInCart()
         {

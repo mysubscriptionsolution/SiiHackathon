@@ -2,12 +2,8 @@
 
 namespace SiiHackathon.Pages
 {
-    internal class RegistrationPage : BasePage
+    internal class RegistrationPage(IPage page) : BasePage(page)
     {
-        public RegistrationPage(IPage page) : base(page)
-        {
-        }
-
         private ILocator FirstNameInput => _page.Locator("#field-firstname");
         private ILocator LastNameInput => _page.Locator("#field-lastname");
         private ILocator EmailInput => _page.Locator("#field-email");

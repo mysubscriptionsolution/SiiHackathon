@@ -1,7 +1,13 @@
 ﻿using SiiHackathon.Pages;
+using System.Text.Json;
 
 namespace SiiHackathon.Tests
 {
+    public class Credentials 
+    {
+        public string Login { get; set; }
+        public string Password { get; set; }
+    }
     internal class BasicTests : BaseTest
     {
         [Test]
@@ -11,7 +17,15 @@ namespace SiiHackathon.Tests
             await homePage.OpenAsync();
 
             var loginPage = await homePage.ClickLoginButton();
-            await loginPage.Login("mszymczyk@sii.pl", "6G49v3Vn_zu4R#P");
+            Credentials credentials;
+
+            using (var r = new StreamReader("TestData\\testData.json"))
+            {
+                string json = r.ReadToEnd();
+                credentials = JsonSerializer.Deserialize<Credentials>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            }
+
+            await loginPage.Login(credentials.Login, credentials.Password);
         }
 
         [Test]

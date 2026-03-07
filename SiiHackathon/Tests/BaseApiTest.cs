@@ -19,6 +19,10 @@ namespace SiiHackathon.Tests
 
             var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(API_TOKEN+":"));
             headers.Add("Authorization", "Basic " + base64EncodedAuthenticationString);
+            headers.Add("Io-Format", "JSON");
+            headers.Add("Output", "JSON");
+            //headers.Add("Accept", "application/json");
+            //headers.Add("Content-Type", "application/json");
             Request = await this.Playwright.APIRequest.NewContextAsync(new()
             {
                 BaseURL = "http://54.37.131.9/api/",

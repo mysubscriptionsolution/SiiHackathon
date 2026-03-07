@@ -8,6 +8,6 @@ namespace SiiHackathon.Const
 {
     internal class ApiUrls
     {
-        public const string GetProducts = "products";
+        public const string Products = "products";
     }
 }

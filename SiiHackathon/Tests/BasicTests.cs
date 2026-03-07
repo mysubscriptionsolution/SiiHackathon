@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SiiHackathon.Tests
+﻿namespace SiiHackathon.Tests
 {
     internal class BasicTests : BaseTest
     {
         [Test]
-        public void CreateAccount()
+        public async Task CreateAccount()
         {
-            //Arrange
-            //Act
-            
-            //Assert
+            var loginPage = new Pages.LoginPage(_page);
+            await loginPage.Login("admin@local.dev", "hackathon-sii-2026");
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Playwright;
-using System.Buffers.Text;
 
 namespace SiiHackathon.Tests
 {
@@ -7,17 +6,22 @@ namespace SiiHackathon.Tests
     public class BaseTest
     {
         private IBrowser _browser;
-        private IPage _page;
+        private IBrowserContext _context;
+        protected IPage _page;
         private IPlaywright _playwright;
-        private string _baseUrl = "http://54.37.131.9/";
+        private const string _baseUrl = "http://54.37.131.9/";
 
         [SetUp]
         public async Task SetUp()
         {
             _playwright = await Playwright.CreateAsync();
             _browser = await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
-            _page = await _browser.NewPageAsync();
-
+            _context = await _browser.NewContextAsync(new BrowserNewContextOptions
+            {
+                BaseURL = _baseUrl
+            });
+            _page = await _context.NewPageAsync();
+            await _page.GotoAsync("/");
         }
 
         [TearDown]
@@ -26,6 +30,5 @@ namespace SiiHackathon.Tests
             await _browser.CloseAsync();
             _playwright.Dispose();
         }
-
     }
 }

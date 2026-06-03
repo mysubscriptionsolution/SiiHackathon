@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'Feature name (optional)'
+        description: "Feature name (optional)"
         required: false
 
 permissions:

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch name (optional)'
+        description: "Branch name (optional)"
         required: false
 
 permissions:
